@@ -8,7 +8,8 @@ except ImportError:
 from social_auth.views import auth, complete, disconnect
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     # authentication
     url(r'^login/(?P<backend>[^/]+)/$', auth, name='socialauth_begin'),
     url(r'^complete/(?P<backend>[^/]+)/$', complete,

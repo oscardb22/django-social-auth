@@ -10,7 +10,6 @@ from social.strategies.utils import get_strategy
 from social.apps.django_app.utils import strategy, BACKENDS, STORAGE
 from social.apps.django_app.views import _do_login
 
-
 STRATEGY = getattr(settings, setting_name('STRATEGY'),
                    'social_auth.strategy.DSAStrategy')
 

@@ -1,13 +1,13 @@
 from collections import defaultdict
 
-from social.apps.django_app.context_processors import login_redirect, \
-                                                      backends, LazyDict
+from social.apps.django_app.context_processors import login_redirect, backends, LazyDict
 from social.backends.oauth import BaseOAuth1, BaseOAuth2
 from social.backends.open_id import OpenIdAuth
 from social.utils import user_is_authenticated
 
 from social_auth.models import UserSocialAuth
 from social_auth.backends import get_backends
+
 
 # Note: social_auth_backends, social_auth_by_type_backends and
 #       social_auth_by_name_backends don't play nice together.
@@ -25,12 +25,14 @@ def social_auth_by_type_backends(request):
     Will add a output from backends_data to context under social_auth key where
     each entry will be grouped by backend type (openid, oauth, oauth2).
     """
+
     def context_value():
         data = dict(backends(request)['backends'])
         data['backends'] = group_backend_by_type(data['backends'])
         data['not_associated'] = group_backend_by_type(data['not_associated'])
         data['associated'] = group_backend_by_type(data['associated'])
         return data
+
     return {'social_auth': LazyDict(context_value)}
 
 
@@ -42,14 +44,16 @@ def social_auth_by_name_backends(request):
     with a hyphen have the hyphen replaced with an underscore, e.g.
     google-oauth2 becomes google_oauth2 when referenced in templates.
     """
+
     def context_value():
         keys = [key for key in get_backends().keys()]
         accounts = dict(zip(keys, [None] * len(keys)))
         user = request.user
         if user_is_authenticated(user):
             accounts.update((assoc.provider, assoc)
-                    for assoc in UserSocialAuth.get_social_auth_for_user(user))
+                            for assoc in UserSocialAuth.get_social_auth_for_user(user))
         return accounts
+
     return {'social_auth': LazyDict(context_value)}
 
 

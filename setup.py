@@ -3,7 +3,6 @@
 from os.path import join, dirname
 from setuptools import setup
 
-
 version = __import__('social_auth').__version__
 
 LONG_DESCRIPTION = """
